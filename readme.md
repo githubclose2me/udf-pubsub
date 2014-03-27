@@ -16,5 +16,20 @@ Build the as_publish.so by running the script:
 ./build_linux.sh
 ```
 #### Step 4
-Copy the as_publish.so to the directory /opt/citrusleaf/usr/udf/lua on each node in your cluster. 
-__Important__ C mondules are not automatically registered or propogated to all nodes in the cluster, you need to do it manually.
+Copy the shared library ```as_publish.so``` to the directory ```/opt/citrusleaf/usr/udf/lua``` on each node in your cluster. 
+__Important__ C modules are not automatically registered or propogated to all nodes in the cluster, you need to do it manually.
+#### Step 5
+Register the UDF module located at lua/send_message.lua, by using the following command from the project root directory
+```
+ascli udf-put lua/send_message.lua
+``` 
+
+### Running the example
+You could write and application using the Aerospike APIs to test this example, but rather than writing code, you can use the commandline utility of [ASCLI](https://docs.aerospike.com/pages/viewpage.action?pageId=3807525).
+Run the following ASCLI command from the root directory of the project
+```
+ascli udf-record-apply test test "peter001" send_message notify "Hello World!"
+```
+This will invoke the function ```notify``` in the package ```send_message```, on the namespace ```test```, the set ```test``` and key ```"peter001"```, and pass it the parameter ```"hello World!"```
+##Discussion
+
