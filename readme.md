@@ -9,7 +9,10 @@ this library will be called from the Lua UDF. See [Calling C from a UDF](https:/
 Construct a reader for the named pipe to process the event.
 ### Build steps
 #### Step 1
-Clone the GitHub repositry at <some place>
+Clone the GitHub repository at https://github.com/aerospike/udf-pubsub, using the command:
+```
+git clone https://github.com/aerospike/udf-pubsub.git
+```
 #### Step 2
 Build the as_publish.so by running the script:
 ```
