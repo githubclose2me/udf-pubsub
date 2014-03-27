@@ -31,7 +31,7 @@ ascli udf-put lua/send_message.lua
 You could write and application using the Aerospike APIs to test this example, but rather than writing code, you can use the commandline utility of [ASCLI](https://docs.aerospike.com/pages/viewpage.action?pageId=3807525).
 Run the following ASCLI command from the root directory of the project
 ```
-ascli udf-record-apply test test "peter001" send_message notify "Hello World!"
+ascli udf-record-apply test test 'peter001' send_message notify 'Hello World!'
 ```
 This will invoke the function ```notify``` in the package ```send_message```, on the namespace ```test```, the set ```test``` and key ```"peter001"```, and pass it the parameter ```"hello World!"```
 ##Discussion
