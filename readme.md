@@ -34,5 +34,7 @@ Run the following ASCLI command from the root directory of the project
 ascli udf-record-apply test test 'peter001' send_message notify 'Hello World!'
 ```
 This will invoke the function ```notify``` in the package ```send_message```, on the namespace ```test```, the set ```test``` and key ```"peter001"```, and pass it the parameter ```"hello World!"```
+
+You also need to have another process on the server that reads the message from the named pipe. 
 ##Discussion
 
