@@ -1,2 +1,2 @@
-REGISTER module 'lua/send_message.lua'
-EXECUTE send_message.notify('cats') ON test.test WHERE PK = 'peter001' 
+REGISTER module 'lua/publish.lua'
+EXECUTE publish.notify('cats') ON test.test WHERE PK = 'peter001' 
