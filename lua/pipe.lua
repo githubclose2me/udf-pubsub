@@ -1,5 +1,31 @@
+local posix = require("posix_c")
 -- Define the table that will hold the functions to be exported.
 local pipe = {};
+  
+function pipe.exists(fileName)
+  local file = posix.open(fileName, posix.O_WRONLY, "")
+  if file ~= nil then
+    io.close(file)
+    print(fileName.." exists")
+    return true
+  else
+    print(fileName.." does not exist")
+    return false
+  end
+end
+
+function pipe.create(name)
+  print("Creating the pipe: " .. name)
+  local handle, msg = posix.mkfifo(name)
+
+  if handle == nil then
+    print("[Error] Couldn't open "..name.." pipe. "..msg)
+    return false
+  else
+    return true
+  end
+end
+
 
 -- ======================================================================
 -- Function connect: Connects to a named pipe. 
@@ -11,25 +37,15 @@ local pipe = {};
 -- false is unsuccessful
 -- ======================================================================
 function pipe.connect(name)
-  print("Creating the pipe: " .. name)
-  --TODO check existence
-  local cmd_status = os.execute("mkfifo "..name)
-
-  if cmd_status == nil then
-    print("[Error] Couldn't "..name.." Pipe")
-    return nil
-  else
     print("Opening the "..name.." pipe...")
-    local pipefd, _, _ = io.open(name, "w")
-    if not pipefd then
-        print("[Error] Couldn't open "..name.." pipe.")
+    local pipefd, err_msg = posix.open(fileName, posix.O_WRONLY)-- + posix.O_NONBLOCK)
+    if pipefd == nil then
+      print ("Cannot open pipe "..name)
     else
-        print(name.." pipe has opened successfully.")
+      print("Opened the "..name.." pipe successfully")
     end
     return pipefd
-  end
 end
-
 
 -- ======================================================================
 -- Function write: Writes to a named pipe.
@@ -42,7 +58,7 @@ end
 -- nil is unsuccessful
 -- ======================================================================
 function pipe.write(pipefd, value)
-  pipefd:write(value)
+  posix.write(pipefd, value)
 end
 
 -- ======================================================================
@@ -53,7 +69,7 @@ end
 -- ======================================================================
 function pipe.disconnect(pipefd)
   pipefd:flush()
-  io.close(pipefd)
+  posix.close(pipefd)
 end
 -- ======================================================================
 -- Export the Table for those who want to import this module and its

@@ -1,5 +1,4 @@
 import os
-import daemon
 import cPickle
 
 
@@ -12,7 +11,7 @@ class App():
         self.pidfile_path = '/var/run/mydaemon.pid'
         self.pidfile_timeout = 5
 
-filepath = '/tmp/aspub'
+filepath = '/Users/peter/aspub'
 try:
     os.mkfifo(filepath)
 except OSError:
@@ -20,9 +19,6 @@ except OSError:
 
 pipe_fd = open(filepath, "r") 
 for line in pipe_fd:
-    print line
+    print( line )
 pipe_fd.close()
 
-app = App()
-daemon_runner = runner.DaemonRunner(app)
-daemon_runner.do_action() 
