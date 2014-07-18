@@ -48,12 +48,12 @@ static int connect(lua_State *L){
 	/* Push the return */
 	lua_pushnumber(L, errno);
 	lua_pushstring(L, strerror( errno ));
-	lua_pushlightuserdata(L, pipe_fd);
+	lua_pushnumber(L, pipe_fd);
 	return 3;
 }
 
 static int disconnect(lua_State *L){
-	int pipe_fd = lua_touserdata(L, 1);
+	int pipe_fd = lua_tointeger(L, 1);
 
 	close(pipe_fd);
 
@@ -62,10 +62,23 @@ static int disconnect(lua_State *L){
 	return 2;
 }
 
+static int push(lua_State *L){
+	int pipe_fd = lua_tointeger(L, 1);
+	char* message = luaL_checkstring(L, 2);
+
+	fwrite(message, sizeof(char), strlen(message), pipe_fd);
+
+	/* Push the return */
+	lua_pushnumber(L, errno);
+	return 2;
+}
+
+
 
 static const struct luaL_Reg publish [] = {
 		{"connect", connect},
 		{"disconnect", disconnect},
+		{"push", push},
 		{NULL, NULL}
 };
 
